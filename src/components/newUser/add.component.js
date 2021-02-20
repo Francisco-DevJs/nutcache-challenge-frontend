@@ -149,8 +149,8 @@ export default class AddEmployee extends Component {
         console.log(e);
       });
       alert('Register Sucessfull Created')
-      this.props.history.push('/employees');
-      window.location.reload(false);
+//       this.props.history.push('/employees');
+//       window.location.reload(false);
   }
 
   
