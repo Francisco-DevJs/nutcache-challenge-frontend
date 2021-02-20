@@ -160,7 +160,7 @@ export default class AddEmployee extends Component {
       <Form>
          <form>
              <div>
-                <button onClick={this.onClickCloseForm} className='closeBtn'>X</button>
+                <button onClick={ () => {this.setState({submitted:true})} } className='closeBtn'>X</button>
              </div>
              
             
