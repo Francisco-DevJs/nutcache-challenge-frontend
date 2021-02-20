@@ -26,7 +26,8 @@ export default class EditEmployee extends Component {
         team:''
       },
       error:'',
-      message: ""
+      message: "",
+      redirect:false
     };
   }
 
@@ -168,7 +169,7 @@ export default class EditEmployee extends Component {
          <form>
          
              <div>
-                <button onClick={this.onClickCloseForm} className='closeBtn'>X</button>
+                <button onClick={ () => {this.setState({redirect:true})} } className='closeBtn'>X</button>
              </div>
              <span className='editing'>Editing Mode</span>
        
@@ -219,13 +220,18 @@ export default class EditEmployee extends Component {
 }
 
   render() {
-    const { currentEmployee } = this.state;
+    const { currentEmployee, redirect } = this.state;
 
     return (
       <div>
         {currentEmployee && (
           <div>
               {this.renderForm()}
+          </div>
+        )},
+      {redirect &&(
+          <div>
+            <Redirect to='/employees'/>
           </div>
         )}
       </div>
