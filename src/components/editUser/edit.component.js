@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import AllServices from '../../services/employee.service';
 import {Form} from './style';
+import { Redirect } from "react-router-dom";
 
 export default class EditEmployee extends Component {
   constructor(props) {
