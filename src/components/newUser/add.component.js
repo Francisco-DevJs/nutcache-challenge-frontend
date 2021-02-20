@@ -62,7 +62,7 @@ export default class AddEmployee extends Component {
     this.setState(prevState => ({ cpf: normalizeInput(value, prevState.cpf) }));
     }
   formatedOnlyLetters(e){
-     let regExp = /[^A-Za-z]/g;
+     let regExp = /[^A-Za-z ]/g;
      let letter = e.target.value.replace(regExp, '');
      this.setState({ name:letter })
     }
