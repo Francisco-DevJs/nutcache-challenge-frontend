@@ -82,7 +82,7 @@ export default class EditEmployee extends Component {
 }
 
   formatedOnlyLetters(e){
-     let regExp = /[^A-Za-z]/g;
+     let regExp = /[^A-Za-z ]/g;
      let letter = e.target.value.replace(regExp, '');
      this.setState({currentEmployee: { name:letter} })
     }
