@@ -128,7 +128,7 @@ export default class EditEmployee extends Component {
   updateEmployee(e) {
     e.preventDefault()
     const { name, bDate, gender, email, cpf, startDate, team } = this.state.currentEmployee;
-    const regExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    const regExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     
     if(name == '' || bDate == '' || gender == '' || email == '' || cpf =='' || startDate == '' || team == ''){
         this.setState({ error:'*Required Field is missing' })
