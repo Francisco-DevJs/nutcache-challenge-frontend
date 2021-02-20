@@ -101,14 +101,18 @@ export const Form = styled.div`
  
     .closeBtn{
         text-align:center;
+        cursor:pointer;
         position: absolute;
         width:1.2rem;
         font-size:0.8rem;
         border-radius:80px;
         border:none;
         color: white ;
-        margin:0.4rem 1rem 0 12rem;
+        
+        right:0.5rem;
+        margin:0.4rem 0 0 0;
         background-color:red;
+        z-index:9999;
      
       
     
