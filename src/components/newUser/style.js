@@ -14,13 +14,8 @@ export const Container = styled.div`
             text-decoration:none;
             box-sizing:border-box;
             font-size: 1.5rem;
-
             width:200px;
             height:40px;
-          
-
-            
-            
             color:snow;
             margin-top:0.5rem;
             margin-bottom:0.5rem;
@@ -57,11 +52,11 @@ export const Form = styled.div`
         top:14rem;
       
         form{
-            left:auto;
-            top:auto;
-                transform: translateX(auto);
-                transform: translateY(auto);
-            position:absolute;
+        left:auto;
+        top:auto;
+        transform: translateX(auto);
+        transform: translateY(auto);
+        position:absolute;
         background-color: #92bCE5;
         border-radius:10px;
       
@@ -71,7 +66,7 @@ export const Form = styled.div`
         -moz-box-shadow: 7px 12px 14px -2px rgba(104,106,122,1);
         box-shadow: 7px 12px 14px -2px rgba(104,106,122,1); 
         max-width:90%;
-        max-height:70%;
+        max-height:85%;
 
     }
       span {
