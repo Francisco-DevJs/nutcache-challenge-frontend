@@ -1,39 +1,37 @@
 import React, { Component } from "react";
-import TutorialDataService from '../../services/employee.service';
-import { Link, Redirect } from "react-router-dom";
+import AllServices from '../../services/employee.service';
+import { Link } from "react-router-dom";
 import {ContainerCard} from './style';
 export default class GetEmployee extends Component {
   constructor(props) {
     super(props);
-    // this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+  
+    this.retrieveEmployees = this.retrieveEmployees.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveTutorial = this.setActiveTutorial.bind(this);
-    // this.removeAllTutorials = this.removeAllTutorials.bind(this);
-    // this.searchTitle = this.searchTitle.bind(this);
+    this.setActiveEmployee = this.setActiveEmployee.bind(this);
+
 
     this.state = {
-      tutorials: [],
-      currentTutorial: null,
+      employees: [],
+      currentEmployee: null,
       currentIndex: -1,
-      searchTitle: "",
       currentId:null,
-      conditinalRender: true
+      deletePopUp:false
     };
   }
 
   componentDidMount() {
-    this.retrieveTutorials();
+    this.retrieveEmployees();
     window.scrollTo(0,0);
   }
 
   //essencial
-  retrieveTutorials() {
-    TutorialDataService.getAll()
+  retrieveEmployees() {
+    AllServices.getAll()
       .then(response => {
         this.setState({
-          tutorials: response.data,
-          conditinalRender:false
+          employees: response.data,
+        
 
         });
         console.log(response.data);
@@ -44,16 +42,16 @@ export default class GetEmployee extends Component {
   }
 //essencial
   refreshList() {
-    this.retrieveTutorials();
+    this.retrieveEmployes();
     this.setState({
-      currentTutorial: null,
+      currentEmployee: null,
       currentIndex: -1
     });
   }
 
-  setActiveTutorial(tutorial, index) {
+  setActiveEmployee(employee, index) {
     this.setState({
-      currentTutorial: tutorial,
+      currentEmployee: employee,
       currentIndex: index
     });
   }
@@ -61,8 +59,8 @@ export default class GetEmployee extends Component {
 
 
 
-  deleteTutorial(currentId) {    
-    TutorialDataService.delete(currentId)
+  deleteEmployee(currentId) {    
+    AllServices.delete(currentId)
       .then(response => {
         console.log(response.data);
         this.props.history.push('/employees')
@@ -75,48 +73,60 @@ export default class GetEmployee extends Component {
   }
 
   render() {
-    const { tutorials } = this.state;
+    const { employees, deletePopUp } = this.state;
 
     return (
       <div>
        <ContainerCard>
 
-            {tutorials.length == 0 && <div><span>No Employes Registred.</span></div>}
-           {tutorials && 
+            {employees.length === 0 && <div><span>No Employes Registred.</span></div>}
+           {employees && 
 
-             tutorials.map((tutorial, index) => (
+             employees.map((employee, index) => (
              
              <div className='card' key={index}>
                <div className='item'>
                  
              <ul>
                <li >
-                 <strong>Nome:</strong> {tutorial.name}
+                 <strong>Nome:</strong> {employee.name}
                </li>
                <li>
-                 <strong>Email:</strong> {tutorial.email} 
+                 <strong>Email:</strong> {employee.email} 
                </li>
                <li>
-                 <strong>Start Date:</strong> {tutorial.startDate}
+                 <strong>Start Date:</strong> {employee.startDate}
                </li>
                <li>
-                 <strong>Team:</strong> {tutorial.team}
+                 <strong>Team:</strong> {employee.team}
                </li>
                  
-                   <Link to={"/employees/" + tutorial.id}>
+                   <Link to={"/employees/" + employee.id}>
                  <button className="editBtn">
                      Edit
                  </button>
                    </Link>
-                 <button onClick={this.deleteTutorial.bind(this,tutorial.id) } 
-                                       className='deleteBtn'>delete</button>
+                      <button onClick={() => {this.setState({ deletePopUp:!deletePopUp })}} className='deleteBtn'>Delete</button>
+                 
+                 
+                  {deletePopUp && 
+                  <div className='deletePopUp'>
+                      <span>Are you sure to delete?</span>
+                      <button className='goBackBtn' onClick={() => {this.setState({ deletePopUp:false})}}>Back</button>
+                      <button onClick={this.deleteEmployee.bind(this,employee.id) }
+                              className='realDelete'>Delete</button>
+                  </div>}
+                 {/* <button onClick={this.deleteEmployee.bind(this,employee.id) } 
+                                       className='deleteBtn'>delete</button> */}
                </ul>
                  </div>    
                
                </div>
              ))
             }
-             
+       </ContainerCard>
+
+            
          
                
           {/* fazer um maps no card, e colocar */}
@@ -124,7 +134,6 @@ export default class GetEmployee extends Component {
          
     
 
-       </ContainerCard>
       
       </div>
     );

@@ -118,5 +118,68 @@ position:relative;
         box-shadow:1px 1px 4px black;
 
     }
+    .deletePopUp{
+        width:200px;
+        height:100px;
+        background-color:#41729F;
+        position:absolute;
+        z-index:9999;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%);
+        border-radius:10px;
+
+    }
+    .deletePopUp span{
+        position:absolute;
+        font-size:1.2rem;
+        margin-top:1rem;
+        margin-left:0.2rem;
+        color:snow;
+    }
+    .goBackBtn{
+        width:3rem;
+        height:2rem;
+        text-align:center;
+        font-size:1rem;
+        background-color:silver;
+        color:#050A30;
+        border:none;
+        border-radius:4px;
+        position:absolute;
+        bottom:1rem;
+        margin-left:0.4rem;
+
+
+    }
+    .goBackBtn:hover{
+        color:#274472;
+        cursor: pointer;
+        background-color:snow;
+        box-shadow:4px 3px 2px black;
+    }
+    .realDelete{
+        width:3rem;
+        height:2rem;
+        margin-left:1rem;   
+        font-size:1rem;
+        background-color:red;
+        color:silver;
+        border:none;
+        border-radius:4px;
+        position:absolute;
+        bottom:1rem;
+        margin-left:4.2rem;
+
+    }
+    .realDelete:hover{
+
+        color:snow;
+        cursor: pointer;
+        background-color:red;
+        box-shadow:4px 3px 2px black;
+
+    }
+
 
 `
