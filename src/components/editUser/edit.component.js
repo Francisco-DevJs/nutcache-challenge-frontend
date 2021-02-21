@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import AllServices from '../../services/employee.service';
-import {Form} from './style';
+import { Form } from './style';
 import { Redirect } from "react-router-dom";
-
+import { cpfMask } from '../../mask/cpfMask';
+import { dateMask } from '../../mask/dateMask';
 export default class EditEmployee extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +13,9 @@ export default class EditEmployee extends Component {
   
     this.handleChange = this.handleChange.bind(this);
     this.formatedCpf = this.formatedCpf.bind(this);
+    this.formatedDate = this.formatedDate.bind(this);
     this.formatedOnlyLetters = this.formatedOnlyLetters.bind(this);
-    this.formatedBDate = this.formatedBDate.bind(this);
-    this.formaterStartDate = this.formaterStartDate.bind(this);
+
 
     this.state = {
       currentEmployee: {
@@ -65,63 +66,35 @@ export default class EditEmployee extends Component {
   }
 ///--------------------------formated-input---------------------///
 
-  formatedCpf( {target: {value} }){
-    this.setState(prevState => ({ currentEmployee: {cpf: normalizeInput(value, prevState.cpf)} }));
-    const normalizeInput = (value, previousValue) => {
-      if (!value) return value;
-      const currentValue = value.replace(/[^\d]/g, '');
-      const cvLength = currentValue.length;
-      
-      if (!previousValue || value.length > previousValue.length) {
-        if (cvLength < 3) return currentValue;
-        if (cvLength < 6) return `${currentValue.slice(0, 3)}.${currentValue.slice(3, 6)}`;
-        if (cvLength < 9) return `${currentValue.slice(0, 3)}.${currentValue.slice(3, 6)}.${currentValue.slice(6, 9)}`;
-        return `${currentValue.slice(0, 3)}.${currentValue.slice(3, 6)}.${currentValue.slice(6,9)}-${currentValue.slice(9,11)}`;
-      }
-    };
-}
+  formatedCpf(e){
+    const validCpf = cpfMask(e.target.value)
+    this.setState(prevState => ({
+                currentEmployee:{
+                  ...prevState.currentEmployee,
+                  cpf:validCpf
+                }
+    }))
+  }
 
+  formatedDate(e){
+  const validDate = dateMask(e.target.value)
+  this.setState(prevState => ({
+              currentEmployee:{
+                ...prevState.currentEmployee,
+                [e.target.name]:validDate
+              }
+  }))
+  }
   formatedOnlyLetters(e){
-     let regExp = /[^A-Za-z ]/g;
-     let letter = e.target.value.replace(regExp, '');
-     this.setState({currentEmployee: { name:letter} })
-    }
-  
-  formatedBDate({target: {value} }){
-    // let value = e.target.value
-    
-    const normalizeInput = (value, previousValue) => {
-      if (!value) return value;
-      const currentValue = value.replace(/[^\d]/g, '');
-      const cvLength = currentValue.length;
-      
-      if (!previousValue || value.length > previousValue.length) {
-        if (cvLength < 2) return currentValue;
-        if (cvLength < 4) return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}`;
-        if (cvLength < 8) return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}/${currentValue.slice(4, 8)}`;
-        return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}/${currentValue.slice(4,8)}`;
-      }
-    };
-    this.setState(prevState => ({ currentEmployee:{bDate: normalizeInput(value, prevState.bDate) } }));
-  }
-  
-  formaterStartDate({target: {value} }){
-    // let value = e.target.value
-    
-    const normalizeInput = (value, previousValue) => {
-      if (!value) return value;
-      const currentValue = value.replace(/[^\d]/g, '');
-      const cvLength = currentValue.length;
-      
-      if (!previousValue || value.length > previousValue.length) {
-        if (cvLength < 2) return currentValue;
-        if (cvLength < 4) return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}`;
-        if (cvLength < 8) return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}/${currentValue.slice(4, 8)}`;
-        return `${currentValue.slice(0, 2)}/${currentValue.slice(2, 4)}/${currentValue.slice(4,8)}`;
-      }
-    };
-    this.setState(prevState => ({ currentEmployee:{startDate: normalizeInput(value, prevState.startDate)} }));
-  }
+  let regExp = /[^A-Za-z ]/g;
+  let letter = e.target.value.replace(regExp, '');
+  this.setState(prevState => ({
+              currentEmployee:{
+              ...prevState.currentEmployee,
+              [e.target.name]:letter
+              }
+    }))
+ }
 
 ///--------------------------Update-form---------------------///
 
@@ -130,7 +103,8 @@ export default class EditEmployee extends Component {
     const { name, bDate, gender, email, cpf, startDate, team } = this.state.currentEmployee;
     const regExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     
-    if(name == '' || bDate == '' || gender == '' || email == '' || cpf =='' || startDate == '' || team == ''){
+    
+    if(name === '' || bDate === '' || gender === '' || email === '' || cpf ==='' || startDate === '' || team === ''){
         this.setState({ error:'*Required Field is missing' })
       return false
     }
@@ -138,7 +112,10 @@ export default class EditEmployee extends Component {
         this.setState({error:'*CPF must have 11 characters'})
         return false
     }
-
+    if(bDate.length < 10 || startDate.length < 10){
+      this.setState({error:'*Date is Invalid'})
+      return false
+    }
     if(!regExp.test(email)){
       this.setState({error: '*Email is Invalid'})
       return false
@@ -178,7 +155,7 @@ export default class EditEmployee extends Component {
                     <input name='name' value={currentEmployee.name} onChange={ this.formatedOnlyLetters }></input>
 
                 <span>Birth Date: </span>
-                       <input name='bDate' value={currentEmployee.bDate}  onChange={ this.formatedBDate }>
+                       <input name='bDate' value={currentEmployee.bDate}  onChange={ this.formatedDate }>
                     </input>
 
                    
@@ -196,7 +173,7 @@ export default class EditEmployee extends Component {
                     <input name='cpf' value={currentEmployee.cpf} onChange={ this.formatedCpf }></input>    
 
                 <span>Start date: </span>
-                    <input name='startDate' value={currentEmployee.startDate} onChange={ this.formaterStartDate }>
+                    <input name='startDate' value={currentEmployee.startDate} onChange={ this.formatedDate }>
 
                     </input>
 
